@@ -1,2 +1,8 @@
-node_modules
+# Dependencias de Node
+node_modules/
+
+# Archivos de entorno
+.env
+
+# Archivos de lock
 package-lock.json
