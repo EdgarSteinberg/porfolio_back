@@ -3,9 +3,7 @@ import nodemailer from 'nodemailer'
 import dotenv from 'dotenv';
 import jwt from 'jsonwebtoken';
 import { createHash, isValidadPassword } from "../utils/bcrypt.js";
-import CustomError from "../service/errors/customErrors.js";
-import generateUserErrorInfo from '../service/errors/info.js';
-import ErrorCodes from '../service/errors/enums.js';
+
 
 import UserDao from "../dao/userDao.js";
 
@@ -45,14 +43,7 @@ class UsersContoller {
         const { first_name, last_name, age, email, password } = user
 
         if (!first_name || !last_name || !age || !email || !password) {
-           // throw new Error('Error al crear el usuario: Todos los campos son obligatorios!');
-           console.log('Error de validación de usuario');
-           CustomError.createError({
-                name: 'User creation error',
-                cause: generateUserErrorInfo({ first_name, last_name, age, email, password }),
-                message: 'Error trying to create user',
-                code: ErrorCodes.INVALID_TYPES_ERROR
-            })
+            throw new Error('Error al crear el usuario: Todos los campos son obligatorios!');   
         }
 
         try {
