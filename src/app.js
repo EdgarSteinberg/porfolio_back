@@ -19,7 +19,7 @@ import gitHubRouter from './routes/github.js';
 import aboutmeRouter from './routes/aboutmeRouter.js';
 import cvRouter from './routes/cvRouter.js';
 import addLogger from './utils/logger.js';
-import middlewareError from './middlewares/errors/middlewaresErrors.js';
+
 
 // Configuración de Passport
 import initializePassport from './config/passportJWT.js';
