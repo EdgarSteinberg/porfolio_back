@@ -101,8 +101,6 @@ if (cluster.isPrimary) {
     app.use('/api/aboutme', aboutmeRouter);
     app.use('/api/cv', cvRouter);
 
-    // Manejo de errores con middleware personalizado
-    app.use(middlewareError);
 
     // Ruta comentada para una página de inicio
     // app.get('/home', (req, res) => {
