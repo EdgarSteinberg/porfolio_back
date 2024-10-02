@@ -3,7 +3,7 @@ import nodemailer from 'nodemailer'
 import dotenv from 'dotenv';
 import jwt from 'jsonwebtoken';
 import { createHash, isValidadPassword } from "../utils/bcrypt.js";
-import CustomError from '../service/errors/customErrors.js';
+import CustomError from "../service/errors/customErrors.js";
 import generateUserErrorInfo from '../service/errors/info.js';
 import ErrorCodes from '../service/errors/enums.js';
 

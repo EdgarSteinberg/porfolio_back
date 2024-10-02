@@ -2,9 +2,7 @@ import { Router } from 'express';
 import jwt from 'jsonwebtoken';
 import passport from 'passport';
 import dotenv from 'dotenv';
-import CustomError from '../service/errors/customErrors.js';
-import generateUserErrorInfo from '../service/errors/info.js';
-import ErrorCodes from '../service/errors/enums.js';
+
 
 const SECRET_KEY = process.env.SECRET_KEY;
 
@@ -38,20 +36,14 @@ router.post('/register', async (req, res,next) => {
 
         if (!first_name || !last_name || !age || !email || !password) {
             return res.status(400).send({ status: 'error', error: 'Todos los campos son obligatorios' });
-        //   console.log('Error de validación de usuario');
-        //    CustomError.createError({
-        //     name: 'User creation error',
-        //     cause: generateUserErrorInfo({ first_name, last_name, age, email, password }),
-        //     message: 'Error trying to create user',
-        //     code: ErrorCodes.INVALID_TYPES_ERROR
-        // }); 
+   
         }
 
         const result = await userController.register({ first_name, last_name, age, email, password });
         res.send({ status: 'success', payload: result });
     } catch (error) {
-        //res.status(400).send({ status: 'error', error: error.message });
-        next(error);  
+        res.status(400).send({ status: 'error', error: error.message });
+        // next(error);  
     }
 });
 
