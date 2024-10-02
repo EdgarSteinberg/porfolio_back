@@ -37,14 +37,14 @@ router.post('/register', async (req, res,next) => {
     try {
 
         if (!first_name || !last_name || !age || !email || !password) {
-           // return res.status(400).send({ status: 'error', error: 'Todos los campos son obligatorios' });
-           console.log('Error de validación de usuario');
-           return next(CustomError.createError({
-            name: 'User creation error',
-            cause: generateUserErrorInfo({ first_name, last_name, age, email, password }),
-            message: 'Error trying to create user',
-            code: ErrorCodes.INVALID_TYPES_ERROR
-        }));
+            return res.status(400).send({ status: 'error', error: 'Todos los campos son obligatorios' });
+        //   console.log('Error de validación de usuario');
+        //    CustomError.createError({
+        //     name: 'User creation error',
+        //     cause: generateUserErrorInfo({ first_name, last_name, age, email, password }),
+        //     message: 'Error trying to create user',
+        //     code: ErrorCodes.INVALID_TYPES_ERROR
+        // }); 
         }
 
         const result = await userController.register({ first_name, last_name, age, email, password });
