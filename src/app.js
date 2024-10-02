@@ -55,10 +55,10 @@ if (cluster.isPrimary) {
     app.use(addLogger);  // Logger personalizado
     app.use(express.json());  // Para parsear JSON
     app.use(express.urlencoded({ extended: true }));  // Para parsear datos de formularios
-    app.use(express.static('public'));  // Archivos estáticos
+    //app.use(express.static('public'));  // Archivos estáticos
 
     // Opciones comentadas de `express.static`
-    // app.use(express.static(`${__dirname}/../../public`));
+     app.use(express.static(`${__dirname}/../../public`));
     // app.use(express.static(path.join(__dirname, 'public')));
 
     // Configuración de CORS (Descomentar si es necesario)
