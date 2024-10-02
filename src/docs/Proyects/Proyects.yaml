@@ -1,0 +1,189 @@
+openapi: 3.0.0
+info:
+  title: Proyectos API
+  version: 1.0.0
+  description: API para gestionar proyectos en la plataforma.
+
+paths:
+  /api/proyects:
+    get:
+      summary: Obtener todos los proyectos
+      tags:
+        - Proyectos
+      responses:
+        '200':
+          description: Lista de proyectos obtenida exitosamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  payload:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Proyect'
+        '500':
+          description: Error al obtener los proyectos
+    post:
+      summary: Crear un nuevo proyecto
+      tags:
+        - Proyectos
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                  description: Título del proyecto
+                  example: "Nuevo Proyecto"
+                description:
+                  type: string
+                  description: Descripción del proyecto
+                  example: "Descripción detallada del proyecto"
+                url:
+                  type: array
+                  items:
+                    type: string
+                  description: URLs relacionadas con el proyecto
+                thumbnail:
+                  type: array
+                  items:
+                    type: string
+                    format: binary
+                  description: Archivos de imágenes de miniaturas
+                technologies:
+                  type: array
+                  items:
+                    type: string
+                    format: binary
+                  description: Archivos de imágenes de tecnologías
+      responses:
+        '201':
+          description: Proyecto creado exitosamente
+        '400':
+          description: Error en la solicitud (falta algún campo requerido)
+  
+  /api/proyects/{pid}:
+    get:
+      summary: Obtener proyecto por ID
+      tags:
+        - Proyectos
+      parameters:
+        - in: path
+          name: pid
+          schema:
+            type: string
+          required: true
+          description: ID del proyecto
+      responses:
+        '200':
+          description: Proyecto obtenido exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Proyect'
+        '404':
+          description: Proyecto no encontrado
+    put:
+      summary: Actualizar un proyecto por ID
+      tags:
+        - Proyectos
+      parameters:
+        - in: path
+          name: pid
+          schema:
+            type: string
+          required: true
+          description: ID del proyecto
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                  description: Título del proyecto (opcional)
+                description:
+                  type: string
+                  description: Descripción del proyecto (opcional)
+                url:
+                  type: array
+                  items:
+                    type: string
+                  description: URLs relacionadas con el proyecto (opcional)
+                thumbnail:
+                  type: array
+                  items:
+                    type: string
+                    format: binary
+                  description: Nuevas miniaturas (opcional)
+                technologies:
+                  type: array
+                  items:
+                    type: string
+                    format: binary
+                  description: Nuevas tecnologías (opcional)
+      responses:
+        '200':
+          description: Proyecto actualizado exitosamente
+        '400':
+          description: Error al actualizar el proyecto
+        '404':
+          description: Proyecto no encontrado
+    delete:
+      summary: Eliminar un proyecto por ID
+      tags:
+        - Proyectos
+      parameters:
+        - in: path
+          name: pid
+          schema:
+            type: string
+          required: true
+          description: ID del proyecto
+      responses:
+        '200':
+          description: Proyecto eliminado exitosamente
+        '404':
+          description: Proyecto no encontrado
+
+components:
+  schemas:
+    Proyect:
+      type: object
+      properties:
+        _id:
+          type: string
+          description: ID del proyecto
+        title:
+          type: string
+          description: Título del proyecto
+        description:
+          type: string
+          description: Descripción del proyecto
+        url:
+          type: array
+          items:
+            type: string
+          description: URLs del proyecto
+        thumbnail:
+          type: array
+          items:
+            type: string
+          description: Imágenes de miniaturas
+        technologies:
+          type: array
+          items:
+            type: string
+          description: Imágenes de tecnologías
+      required:
+        - title
+        - description
+        - url

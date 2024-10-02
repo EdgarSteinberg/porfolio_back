@@ -1,6 +1,10 @@
 import mongoose from 'mongoose';
+import dotenv from 'dotenv';
 
-const messageCollection = 'messages';
+dotenv.config();
+
+
+const messageCollection = process.env.DB_COLLECTION || 'messages';
 
 const messageSchema = mongoose.Schema({
     name: { type: String, required: true },
