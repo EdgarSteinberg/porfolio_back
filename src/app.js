@@ -65,9 +65,9 @@ if (cluster.isPrimary) {
     // app.use(cors());
 
     // CORS configurado para permitir solicitudes desde el frontend local
+    
     app.use(cors({
-        //origin: 'http://localhost:5173',
-        origin: 'https://porfolio-frontend.onrender.com',   // Cambia esto a tu dominio frontend
+        origin: ['https://porfolio-frontend.onrender.com', 'https://portafolio-steinberg-edgar.netlify.app'], // Permite múltiples orígenes
         credentials: true
     }));
 
