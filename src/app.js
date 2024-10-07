@@ -35,7 +35,7 @@ const app = express();
 app.use(compression());
 
 // Manejo de múltiples núcleos con Cluster
-if (cluster.isPrimary) {
+/* if (cluster.isPrimary) {
     // Crear un proceso por cada núcleo de la CPU disponible
     for (let i = 0; i < cpus().length; i++) {
         cluster.fork();
@@ -46,7 +46,7 @@ if (cluster.isPrimary) {
         console.log(`PID instance ${worker.process.pid} down, creating a new one...`);
         cluster.fork();
     });
-} else {
+} else { */
     // Bloque de conexión a MongoDB
     const uri = process.env.MONGODB_URI;
     mongoose.connect(uri);
@@ -121,7 +121,7 @@ if (cluster.isPrimary) {
     app.listen(PORT, () => {
         console.log(`Worker ${process.pid} is running and listening on http://localhost:${PORT}`);
     });
-}
+//}
 
 // URL de referencia (manténla si la necesitas para documentación)
 /// https://almondine-stealer-d91.notion.site/0fe6b4bc1c354ef99f0f88380a7e924a?v=ac85a3a9ef1c4616bcfff66e99ce10ea&p=a9105f3501fc432a9bf5773420089dd1&pm=s
