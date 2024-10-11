@@ -15,7 +15,7 @@ const initializePassportGitHub = () => {
     passport.use('github', new GitHubStrategy({
         clientID: CLIENT_ID,
         clientSecret: SECRET_ID,
-        callbackURL: 'https://porfolio-back-lr6x.onrender.com/api/gitHub/githubcallback',
+        callbackURL: 'https://porfolioback-production-bbd6.up.railway.app/api/gitHub/githubcallback',
     },
     async (accessToken, refreshToken, profile, done) => {
         try {

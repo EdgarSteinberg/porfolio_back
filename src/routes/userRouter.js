@@ -1,8 +1,5 @@
 import { Router } from 'express';
 import jwt from 'jsonwebtoken';
-import passport from 'passport';
-import dotenv from 'dotenv';
-
 
 const SECRET_KEY = process.env.SECRET_KEY;
 
@@ -30,13 +27,13 @@ router.get('/:uid', async (req, res) => {
     }
 });
 
-router.post('/register', async (req, res,next) => {
+router.post('/register', async (req, res, next) => {
     const { first_name, last_name, age, email, password } = req.body;
     try {
 
         if (!first_name || !last_name || !age || !email || !password) {
             return res.status(400).send({ status: 'error', error: 'Todos los campos son obligatorios' });
-   
+
         }
 
         const result = await userController.register({ first_name, last_name, age, email, password });
@@ -64,6 +61,7 @@ router.post('/login', async (req, res) => {
         res.cookie('rojoCookieToken', token, { maxAge: 60 * 60 * 1000 })
             .send({ status: 'success', payload: result });
 
+        res.redirect('https://edgar-steinberg-portfolio.netlify.app/proyects')
     } catch (error) {
         res.status(400).send({ status: 'error', error: error.message });
     }
@@ -85,13 +83,13 @@ router.get('/current', async (req, res) => {
 
 router.put('/:uid', async (req, res) => {
     const { uid } = req.params;
-    const update  = req.body
+    const update = req.body
 
     if (!uid) {
         throw new Error(`El ID: ${uid} No existe`)
     }
     try {
-        const result = await userController.updateUser( uid, update );
+        const result = await userController.updateUser(uid, update);
         res.send({ status: 'success', payload: result })
     } catch (error) {
         res.status(500).send({ status: 'error', error: error.message });

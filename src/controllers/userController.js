@@ -4,7 +4,6 @@ import dotenv from 'dotenv';
 import jwt from 'jsonwebtoken';
 import { createHash, isValidadPassword } from "../utils/bcrypt.js";
 
-
 import UserDao from "../dao/userDao.js";
 
 const userDao = new UserDao();
