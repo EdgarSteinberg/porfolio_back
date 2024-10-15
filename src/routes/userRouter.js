@@ -59,7 +59,6 @@ router.post('/login', async (req, res) => {
         const token = jwt.sign({ email: result.email, id: result._id }, 'rojoSecret', { expiresIn: '24h' });
 
         res.cookie('rojoCookieToken', token, { maxAge: 60 * 60 * 1000 })
-            .send({ status: 'success', payload: result });
 
         res.redirect('https://edgar-steinberg-portfolio.netlify.app/proyects')
     } catch (error) {
