@@ -59,7 +59,7 @@ router.post('/login', async (req, res) => {
 
         const token = jwt.sign({ email: result.email, id: result._id }, 'rojoSecret', { expiresIn: '24h' });
 
-        res.cookie('rojoCookieToken', token, { 
+        res.cookie('rojoCookieToken', token, {
             maxAge: 60 * 60 * 1000,  // 1 hora
             httpOnly: true,          // Evita acceso desde JavaScript en el cliente
             secure: true,            // Asegura que la cookie se envíe solo por HTTPS
