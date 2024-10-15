@@ -58,7 +58,15 @@ router.post('/login', async (req, res) => {
 
         const token = jwt.sign({ email: result.email, id: result._id }, 'rojoSecret', { expiresIn: '24h' });
 
-        res.cookie('rojoCookieToken', token, { maxAge: 60 * 60 * 1000 }).redirect('https://edgar-steinberg-portfolio.netlify.app/proyects')
+        res.cookie('rojoCookieToken', token, { 
+            maxAge: 60 * 60 * 1000,  // 1 hora
+            httpOnly: true,          // Evita acceso desde JavaScript en el cliente
+            secure: true,            // Asegura que la cookie se envíe solo por HTTPS
+            sameSite: 'None'         // Permite uso en diferentes dominios
+        });
+
+        // Luego se realiza el redireccionamiento
+        return res.status(200).send({ status: 'success', redirectUrl: 'https://edgar-steinberg-portfolio.netlify.app/proyects' });
     } catch (error) {
         res.status(400).send({ status: 'error', error: error.message });
     }
