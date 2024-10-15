@@ -37,7 +37,8 @@ router.post('/register', async (req, res, next) => {
         }
 
         const result = await userController.register({ first_name, last_name, age, email, password });
-        res.send({ status: 'success', payload: result });
+        return res.status(200).send({ status: 'success', redirectUrl: 'https://edgar-steinberg-portfolio.netlify.app/login' });
+        //res.send({ status: 'success', payload: result });
     } catch (error) {
         res.status(400).send({ status: 'error', error: error.message });
         // next(error);  
