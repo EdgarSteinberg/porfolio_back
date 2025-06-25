@@ -48,7 +48,7 @@ app.use(express.static(`${__dirname}/../../public`));
 // app.use(express.static(path.join(__dirname, 'public')));
 
  app.use(cors({
-    origin: ['http://localhost:5173', 'https://edgar-steinberg-portfolio.netlify.app'], // Permite múltiples orígenes
+    origin: ['https://edgar-steinberg-portfolio.netlify.app'], // Permite múltiples orígenes
     credentials: true
 }));
 
