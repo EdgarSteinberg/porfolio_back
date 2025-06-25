@@ -47,10 +47,17 @@ app.use(express.urlencoded({ extended: true }));  // Para parsear datos de formu
 app.use(express.static(`${__dirname}/../../public`));
 // app.use(express.static(path.join(__dirname, 'public')));
 
-app.use(cors({
+ app.use(cors({
     origin: ['http://localhost:5173', 'https://edgar-steinberg-portfolio.netlify.app'], // Permite múltiples orígenes
     credentials: true
 }));
+
+/*
+app.use(cors({
+    origin: ['http://localhost:5173'], // Permite múltiples orígenes
+    credentials: true
+}));
+ */
 
 // Middleware para parsear cookies
 app.use(cookieParser());
