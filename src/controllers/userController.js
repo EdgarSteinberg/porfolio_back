@@ -13,7 +13,8 @@ dotenv.config()
 const EMAIL = process.env.EMAIL_USER;
 const PASS = process.env.EMAIL_PASS;
 const SECRET_KEY = process.env.SECRET_KEY;
-const resend = process.env.RESEND_API_KEY;
+const resend = new Resend(process.env.RESEND_API_KEY);
+
 class UsersContoller {
 
     async getAllUsers() {
