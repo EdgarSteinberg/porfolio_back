@@ -47,10 +47,10 @@ app.use(express.urlencoded({ extended: true }));  // Para parsear datos de formu
 app.use(express.static(`${__dirname}/../../public`));
 // app.use(express.static(path.join(__dirname, 'public')));
 
-  app.use(cors({
+app.use(cors({
     origin: ['https://edgar-steinberg-portfolio.netlify.app'], // Permite múltiples orígenes
     credentials: true
-})); 
+}));
 
 
 /* app.use(cors({
@@ -102,5 +102,3 @@ app.listen(PORT, () => {
 });
 
 
-// URL de referencia (manténla si la necesitas para documentación)
-/// https://almondine-stealer-d91.notion.site/0fe6b4bc1c354ef99f0f88380a7e924a?v=ac85a3a9ef1c4616bcfff66e99ce10ea&p=a9105f3501fc432a9bf5773420089dd1&pm=s

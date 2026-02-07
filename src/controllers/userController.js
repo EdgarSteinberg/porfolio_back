@@ -1,8 +1,9 @@
 import userModel from "../models/usersModels.js";
-import nodemailer from 'nodemailer'
+/* import nodemailer from 'nodemailer' */
 import dotenv from 'dotenv';
 import jwt from 'jsonwebtoken';
 import { createHash, isValidadPassword } from "../utils/bcrypt.js";
+import { Resend } from "resend";
 
 import UserDao from "../dao/userDao.js";
 
@@ -12,7 +13,7 @@ dotenv.config()
 const EMAIL = process.env.EMAIL_USER;
 const PASS = process.env.EMAIL_PASS;
 const SECRET_KEY = process.env.SECRET_KEY;
-
+const resend = process.env.RESEND_API_KEY;
 class UsersContoller {
 
     async getAllUsers() {
@@ -36,13 +37,13 @@ class UsersContoller {
             throw new Error('Error al obtener el usuario'); // Mantén el mensaje genérico para evitar fugas de información
         }
     }
-    
+
 
     async register(user) {
         const { first_name, last_name, age, email, password } = user
 
         if (!first_name || !last_name || !age || !email || !password) {
-            throw new Error('Error al crear el usuario: Todos los campos son obligatorios!');   
+            throw new Error('Error al crear el usuario: Todos los campos son obligatorios!');
         }
 
         try {
@@ -84,10 +85,10 @@ class UsersContoller {
         }
     }
 
- 
+
     async updateUser(uid, update) {
         try {
-            const updatedUser = await userDao.updateUser(uid,update);
+            const updatedUser = await userDao.updateUser(uid, update);
             return updatedUser;
         } catch (error) {
             console.log(`El ID : ${uid} no encontrado`, error.message);
@@ -95,49 +96,79 @@ class UsersContoller {
         }
     }
 
-    async deleteUser(uid){
-        try{
+    async deleteUser(uid) {
+        try {
             const result = await userDao.deleteUser(uid)
             return result
-        }catch (error){
+        } catch (error) {
             console.log(`Error al elimnar el usuario, usuario ID: ${uid} no encontrado`, error.message)
             throw new Error(`Error al eliiminar el usuario`, error.meesage);
         }
     }
 
-    async sendEmailPasswordReset(email) {
-        const transport = nodemailer.createTransport({
-            service: 'gmail',
-            port: 587,
-            auth: {
-                user: EMAIL,
-                pass: PASS
+    /*     async sendEmailPasswordReset(email) {
+            const transport = nodemailer.createTransport({
+                service: 'gmail',
+                port: 587,
+                auth: {
+                    user: EMAIL,
+                    pass: PASS
+                }
+            });
+    
+            const user = await userDao.getUserByEmail(email);
+            if (!user) {
+                throw new Error('Correo electronico no encontrado')
             }
-        });
-
+    
+            const token = jwt.sign({ email }, SECRET_KEY, { expiresIn: '1h' });
+            console.log(`Este el token desde el email`, token);
+    
+            await transport.sendMail({
+                from: 'Edgar Steinberg <s.steinberg2019@gmail.com>',
+                to: email,
+                subject: 'Recuperacion de contraseña',
+                html: `<div style="font-family: Arial, sans-serif; color: #333;">
+                <h1>Solicitud de Recuperación de Contraseña</h1>
+                <p>Hemos recibido una solicitud para restablecer tu contraseña. Si no realizaste esta solicitud, por favor ignora este correo.</p>
+                <p>Para restablecer tu contraseña, haz clic en el siguiente enlace:</p>
+                <a href="https://edgar-steinberg-portfolio.netlify.app/reset-password?token=${token}">
+                <button class="btnChat">Restablecer Contraseña</button>
+                </a>
+                <p>Este enlace es válido por 1 hora.</p>
+                <p>Gracias,</p>
+                <p>El equipo de soporte de PorfolioEdgar</p>
+              </div>`
+            });
+    
+            return token;
+        } */
+    async sendEmailPasswordReset(email) {
         const user = await userDao.getUserByEmail(email);
         if (!user) {
-            throw new Error('Correo electronico no encontrado')
+            throw new Error('Correo electronico no encontrado');
         }
 
         const token = jwt.sign({ email }, SECRET_KEY, { expiresIn: '1h' });
-        console.log(`Este el token desde el email`, token);
 
-        await transport.sendMail({
-            from: 'Edgar Steinberg <s.steinberg2019@gmail.com>',
+        await resend.emails.send({
+            from: 'Edgar Steinberg <onboarding@resend.dev>',
             to: email,
-            subject: 'Recuperacion de contraseña',
-            html: `<div style="font-family: Arial, sans-serif; color: #333;">
+            subject: 'Recuperación de contraseña',
+            html: `
+        <div style="font-family: Arial, sans-serif; color: #333;">
             <h1>Solicitud de Recuperación de Contraseña</h1>
-            <p>Hemos recibido una solicitud para restablecer tu contraseña. Si no realizaste esta solicitud, por favor ignora este correo.</p>
-            <p>Para restablecer tu contraseña, haz clic en el siguiente enlace:</p>
+            <p>Hemos recibido una solicitud para restablecer tu contraseña.</p>
+            <p>Si no realizaste esta solicitud, ignorá este correo.</p>
             <a href="https://edgar-steinberg-portfolio.netlify.app/reset-password?token=${token}">
-            <button class="btnChat">Restablecer Contraseña</button>
+                <button style="padding:10px 16px; background:#000; color:#fff; border:none; cursor:pointer;">
+                    Restablecer Contraseña
+                </button>
             </a>
             <p>Este enlace es válido por 1 hora.</p>
-            <p>Gracias,</p>
-            <p>El equipo de soporte de PorfolioEdgar</p>
-          </div>`
+            <p>El equipo de soporte de PortfolioEdgar</p>
+        </div>
+        `
         });
 
         return token;
